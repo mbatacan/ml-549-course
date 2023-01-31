@@ -31,7 +31,7 @@ if __name__ == '__main__':
         project="hw1_spring2023",  # Leave this as 'hw1_spring2023'
         entity="bu-spark-ml",  # Leave this
         group="<mbatacan>",  # <<<<<<< Put your BU username here
-        notes="64-128-256-512-softmax"  # <<<<<<< You can put a short note here
+        notes="32-32-64-64-128-128-128-softmax"  # <<<<<<< You can put a short note here
     )
 
     """
