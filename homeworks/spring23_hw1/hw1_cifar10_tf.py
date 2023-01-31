@@ -31,7 +31,7 @@ if __name__ == '__main__':
         project="hw1_spring2023",  # Leave this as 'hw1_spring2023'
         entity="bu-spark-ml",  # Leave this
         group="<mbatacan>",  # <<<<<<< Put your BU username here
-        notes="Minimal model"  # <<<<<<< You can put a short note here
+        notes="64-128-256-512-softmax"  # <<<<<<< You can put a short note here
     )
 
     """
@@ -84,25 +84,37 @@ if __name__ == '__main__':
         # Edit code here -- Update the model definition
         # You will need a dense last layer with 10 output channels to classify the 10 classes
         # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+        #layers.RandomFlip("horizontal"),
+        #layers.RandomRotation(0.2),
+         
         layers.Conv2D(32,kernel_size = (3,3), activation = 'relu'),
-        layers.MaxPooling2D(pool_size = (2,2)),
         layers.BatchNormalization(),
-        layers.Dropout(0.3),
+
+        layers.Conv2D(32,kernel_size = (3,3), activation = 'relu'),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D(pool_size = (2,2)),
+        layers.Dropout(0.25),
 
         layers.Conv2D(64,kernel_size= (3,3),activation = 'relu'),
-        layers.MaxPooling2D(pool_size = (2,2)),
         layers.BatchNormalization(),
-        layers.Dropout(0.3),
+
+        layers.Conv2D(64,kernel_size= (3,3),activation = 'relu'),
+        layers.BatchNormalization(),
+        layers.Dropout(0.25),
 
         layers.Conv2D(128,kernel_size =(3,3), activation = 'relu'),
-        layers.MaxPooling2D(pool_size = (2,2)),
         layers.BatchNormalization(),
-        layers.Dropout(0.3),
+
+        layers.Conv2D(128,kernel_size =(3,3), activation = 'relu'),
+        layers.BatchNormalization(),
+        layers.MaxPooling2D(pool_size = (2,2)),
+        layers.Dropout(0.25),
 
         layers.Flatten(),
-        layers.Dense(64, activation='relu'),
+        layers.Dense(128, activation='relu'),
+        layers.Dropout(0.25),
         # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        tf.keras.layers.Dense(10) 
+        tf.keras.layers.Dense(10,activation = 'softmax') 
         ])
 
     # Log the training hyper-parameters for WandB
@@ -113,7 +125,7 @@ if __name__ == '__main__':
         # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
         "learning_rate": 0.001,
         "optimizer": "adam",
-        "epochs": 10,
+        "epochs": 50,
         "batch_size": 32
         # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
     }
@@ -126,7 +138,7 @@ if __name__ == '__main__':
 
     history = model.fit(
         ds_cifar10_train,
-        epochs=10,
+        epochs=50,
         validation_data=ds_cifar10_test,
         callbacks=[WandbMetricsLogger()]
     )
